@@ -13,9 +13,6 @@ The project provides a hybrid numerical–analytical framework for extracting
 - Neural network parameterization  
 - Genetic Algorithm global optimization  
 
-The codes reproduce all tables and figures presented in the manuscript.
-
----
 
 ## 🔍 **Overview of the Method**
 
