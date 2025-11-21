@@ -26,30 +26,30 @@ The nonsinglet evolution equation is solved analytically in Mellin-\(N\) space:
 followed by inverse reconstruction using Laguerre polynomials:
 
 \[
-q(x,Q^2) = \sum_{n=0}^{N_L} a_n(Q^2) L_n(-\ln x).
+q(x,Q0²) = \sum_{n=0}^{N_L} a_n(Q^2) L_n(-\ln x).
 \]
 
-To ensure flexibility, the input distribution at the scale \( Q_0^2 \) is modeled by a neural network, and its parameters are optimized using a genetic algorithm
+To ensure flexibility, the input distribution at the scale Q0² is modeled by a neural network, and its parameters are optimized using a genetic algorithm
 minimizing the global \(\chi^2\).
 
 The framework supports three initial scales:
 
-- \(Q_0^2 = 1\ \text{GeV}^2\)  
-- \(Q_0^2 = 1.69\ \text{GeV}^2\)  
-- \(Q_0^2 = 4\ \text{GeV}^2\)
+- Q0² = 1GeV²  
+- Q0² = 1.69GeV²
+- Q0² = 4GeV²
 
 ---
 
  Purpose
 This project is designed for fitting the parameters of the NNLO non-singlet DGLAP evolution model using a hybrid approach that combines a Genetic Algorithm (GA) and a three-layer Artificial Neural Network (ANN).
 
-Using structure function data:(𝑥,𝑄^2,𝐹2𝑝,𝐹2𝑑,𝐹2ns), alongside the kinematic variables x and 𝑄^2, the model retrieves the following parameters:𝑎𝑢,𝑏𝑢,𝑐𝑢,𝑑𝑢,𝑎𝑑,𝑏𝑑,𝑐𝑑,𝑑𝑑,Λ2
+Using structure function data:(𝑥,Q²,𝐹2𝑝,𝐹2𝑑,𝐹2ns), alongside the kinematic variables x and 𝑄^2, the model retrieves the following parameters:𝑎𝑢,𝑏𝑢,𝑐𝑢,𝑑𝑢,𝑎𝑑,𝑏𝑑,𝑐𝑑,𝑑𝑑,Λ2
 
 📂 Input Data
 Main input file: The data used in this study correspond to the experimental measurements of the BCDMS, SLAC, NMC, H1,
 and ZEUS collaborations
-Columns:x, Q, Q^2, F2p, F2d, F2ns
-The dataset represents simulated or experimental structure function values for proton, deuteron, and non-singlet channels, prepared at a chosen starting scale 𝑄0^2 (default: 4 GeV²).
+Columns:x, Q, Q², F2p, F2d, F2ns
+The dataset represents simulated or experimental structure function values for proton, deuteron, and non-singlet channels, prepared at a chosen starting scale Q0² (default: 4 GeV²).
 
 ⚙️ Methodology
 Data Preprocessing – Load CSV and split into 80% training / 20% validation.
@@ -68,9 +68,9 @@ Multi-Run Averaging – Perform 30 independent runs to get mean ± standard devi
 inverse_coefficients_hybrid_per_runs.csv – Coefficients and 𝑅^2 for each run.
 ga_histories.csv – Best fitness values over generations for each run.
 inverse_coefficients_hybrid_results.csv – Mean and standard deviation of coefficients across runs.
-🔄 Changing 𝑄0^2 
+🔄 Changing Q0² 
 While most existing public repositories hard-code 
-𝑄0^2=4GeV^2, this script allows you to make it a configurable parameter. Adjust the initial-scale filter in load_data() to match your desired 𝑄0^2 and ensure downstream model functions use it consistently.
+Q0²=4GeV^2, this script allows you to make it a configurable parameter. Adjust the initial-scale filter in load_data() to match your desired Q0² and ensure downstream model functions use it consistently.
 
 📌 Requirements
 Python ≥ 3.9
@@ -83,3 +83,13 @@ On a standard CPU, a full 30-run hybrid GA+ANN execution may take between 30–6
 
 🧪 Citation
 If you use this code in an academic publication, please cite the experimental data sources (BCDMS, SLAC, NMC, H1, ZEUS) and acknowledge this Hybrid GA+ANN implementation for NNLO DGLAP inverse modeling.txt
+ Scope of This Repository
+This repository contains only the NNLO non‑singlet DGLAP inversion code.
+
+- Q0² fixed: The starting evolution scale is hard‑coded to: Q0²=4GeV²
+
+- **Important**: Although the accompanying paper presents results for LO, NLO and various values of Q0² (1, 1.69, 4 GeV²), those are **not included** in this public code release.
+
+- **Reason**: The NNLO + Q0²=4 setup matches the most stable and commonly used configuration in high‑precision DIS non‑singlet fits and allows exact reproduction of the paper's NNLO results in a reproducible open‑source form.
+
+
