@@ -2,7 +2,7 @@
 This repository contains the full implementation, data, and supplementary material
 for the article:
 
-**“Nonsinglet distribution functions using the neural network and genetic algorithm”**  
+Nonsinglet distribution functions using the neural network and genetic algorithm
 _Submitted to European Physical Journal A (EPJ A)._
 
 The project provides a hybrid numerical–analytical framework for extracting
@@ -29,8 +29,7 @@ followed by inverse reconstruction using Laguerre polynomials:
 q(x,Q^2) = \sum_{n=0}^{N_L} a_n(Q^2) L_n(-\ln x).
 \]
 
-To ensure flexibility, the input distribution at the scale \( Q_0^2 \) is modeled by
-a neural network, and its parameters are optimized using a genetic algorithm
+To ensure flexibility, the input distribution at the scale \( Q_0^2 \) is modeled by a neural network, and its parameters are optimized using a genetic algorithm
 minimizing the global \(\chi^2\).
 
 The framework supports three initial scales:
@@ -41,9 +40,46 @@ The framework supports three initial scales:
 
 ---
 
-## ⚙️ **Installation**
+ Purpose
+This project is designed for fitting the parameters of the NNLO non-singlet DGLAP evolution model using a hybrid approach that combines a Genetic Algorithm (GA) and a three-layer Artificial Neural Network (ANN).
 
-```bash
-git clone(https://github.com/elhamastaraki90-lang/-Nonsinglet-distribution-functions-using-theneural-network-and-genetic-algorithm.git)
-cd Nonsinglet_PDFs_NN_GA
-pip install -r requirements.txt
+Using structure function data:(𝑥,𝑄^2,𝐹2𝑝,𝐹2𝑑,𝐹2ns), alongside the kinematic variables x and 𝑄^2, the model retrieves the following parameters:𝑎𝑢,𝑏𝑢,𝑐𝑢,𝑑𝑢,𝑎𝑑,𝑏𝑑,𝑐𝑑,𝑑𝑑,Λ2
+
+📂 Input Data
+Main input file: The data used in this study correspond to the experimental measurements of the BCDMS, SLAC, NMC, H1,
+and ZEUS collaborations
+Columns:x, Q, Q^2, F2p, F2d, F2ns
+The dataset represents simulated or experimental structure function values for proton, deuteron, and non-singlet channels, prepared at a chosen starting scale 𝑄0^2 (default: 4 GeV²).
+
+⚙️ Methodology
+Data Preprocessing – Load CSV and split into 80% training / 20% validation.
+Surrogate Modeling with ANN –
+Network architecture: [64, 64, 32] neurons in hidden layers.
+Activation: tanh for hidden layers, linear for output.
+Optimization with GA –
+Population size: 219
+Mutation rate: 0.05
+Crossover rate: 0.80
+Early stopping: stop after 50 generations with no improvement.
+Fine-Tuning – Locally improve GA solutions using the trained ANN.
+Evaluation – Compute 𝑅^2 and RMSE for all channels.
+Multi-Run Averaging – Perform 30 independent runs to get mean ± standard deviation.
+📊 Output Files
+inverse_coefficients_hybrid_per_runs.csv – Coefficients and 𝑅^2 for each run.
+ga_histories.csv – Best fitness values over generations for each run.
+inverse_coefficients_hybrid_results.csv – Mean and standard deviation of coefficients across runs.
+🔄 Changing 𝑄0^2 
+While most existing public repositories hard-code 
+𝑄0^2=4GeV^2, this script allows you to make it a configurable parameter. Adjust the initial-scale filter in load_data() to match your desired 𝑄0^2 and ensure downstream model functions use it consistently.
+
+📌 Requirements
+Python ≥ 3.9
+TensorFlow ≥ 2.8
+NumPy ≥ 1.20
+Pandas ≥ 1.3
+mpmath ≥ 1.3.0 (if exact NNLO forward evolution is enabled)
+⏱ Runtime
+On a standard CPU, a full 30-run hybrid GA+ANN execution may take between 30–60 minutes, depending on dataset size and hardware.
+
+🧪 Citation
+If you use this code in an academic publication, please cite the experimental data sources (BCDMS, SLAC, NMC, H1, ZEUS) and acknowledge this Hybrid GA+ANN implementation for NNLO DGLAP inverse modeling.txt
